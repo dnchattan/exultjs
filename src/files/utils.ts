@@ -1,12 +1,13 @@
-import * as path from 'path';
 import * as fs from 'fs';
+import * as path from 'path';
+
 export function U7Exists(name: string) {
-    let root = 'D:\\Games\\Ultima VII\\BG\\STATIC';
-    fs.existsSync(path.join(root, name));
+    const root = 'D:\\Games\\Ultima VII\\BG\\STATIC';
+    return fs.existsSync(path.join(root, name));
 }
 
 export function U7Open(name: string): Buffer {
-    let root = 'D:\\Games\\Ultima VII\\BG\\STATIC';
+    const root = 'D:\\Games\\Ultima VII\\BG\\STATIC';
     return fs.readFileSync(path.join(root, name));
 }
 

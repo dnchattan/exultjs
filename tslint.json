@@ -1,3 +1,17 @@
 {
-  "extends": "tslint:latest"
+  "extends": "tslint:latest",
+  "rules": {
+    "object-literal-sort-keys": false,
+    "class-name": false,
+    "max-classes-per-file": [
+      true, 3
+    ],
+    "arrow-parens": false,
+    "quotemark": [
+      true, "single"
+    ],
+    "no-console": [
+      false
+    ]
+  }
 }

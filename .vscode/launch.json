@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceRoot}\\src\\index.ts",
-            "outFiles": ["./lib/**"]
+            "outFiles": ["${workspaceRoot}\\lib\\**"]
         },
         {
             "type": "node",

@@ -1,7 +1,14 @@
-import { Readable } from "stream";
+import { Readable } from 'stream';
 
 export interface IDataSource {
+    readonly size: number;
+    readonly pos: number;
+    readonly eof: boolean;
+
+    seek(pos: number): void;
+    skip(n: number): void;
     peek(): number;
+
     read1(): number;
     read2(): number;
     read2high(): number;
@@ -9,79 +16,59 @@ export interface IDataSource {
     read4high(): number;
     read(size: number): ArrayBuffer;
     readString(size: number): string;
-
-    seek(pos: number): void;
-    skip(n: number) : void;
-    readonly size: number;
-    readonly pos: number;
-    readonly eof: boolean;
 }
 
 export class BufferDataSource implements IDataSource {
-    constructor(private _buffer: Buffer) { 
-        this._pos = 0;
+    private cursor: number;
+    constructor(private buffer: Buffer) {
+        this.cursor = 0;
     }
-
-    private _pos: number;
-
     public seek(pos: number) {
-        this._pos = pos;
+        this.cursor = pos;
     }
-
     public skip(n: number) {
-        this._pos += n;
+        this.cursor += n;
     }
-
     public get pos(): number {
-        return this._pos;
+        return this.cursor;
     }
-
     public get size(): number {
-        return this._buffer.byteLength;
+        return this.buffer.byteLength;
     }
-
     public get eof(): boolean {
-        return this._pos > this._buffer.byteLength;
+        return this.cursor > this.buffer.byteLength;
     }
-
     public peek(): number {
-        return this._buffer.readUInt8(this._pos);
+        return this.buffer.readUInt8(this.cursor);
     }
-    
     public read1(): number {
-        return this._buffer.readUInt8(this._pos++);
+        return this.buffer.readUInt8(this.cursor++);
     }
-    
     public read2(): number {
-        let value = this._buffer.readUInt16LE(this._pos);
-        this._pos += 2;
+        const value = this.buffer.readUInt16LE(this.cursor);
+        this.cursor += 2;
         return value;
     }
-    
     public read2high(): number {
-        let value = this._buffer.readUInt16BE(this._pos);
-        this._pos += 2;
+        const value = this.buffer.readUInt16BE(this.cursor);
+        this.cursor += 2;
         return value;
     }
-    
     public read4(): number {
-        let value = this._buffer.readUInt32LE(this._pos);
-        this._pos += 4;
+        const value = this.buffer.readUInt32LE(this.cursor);
+        this.cursor += 4;
         return value;
     }
-    
     public read4high(): number {
-        let value = this._buffer.readUInt32BE(this._pos);
-        this._pos += 4;
+        const value = this.buffer.readUInt32BE(this.cursor);
+        this.cursor += 4;
         return value;
     }
-    
     public read(n: number): ArrayBuffer {
-        let value = this._buffer.buffer.slice(this._pos, this._pos += n);
+        const value = this.buffer.buffer.slice(this.cursor, this.cursor += n);
         return value;
     }
-
     public readString(size: number): string {
-        return this._buffer.toString("ascii", this._pos, this._pos += size);
+        return this.buffer.toString('ascii', this.cursor, this.cursor += size);
     }
 }

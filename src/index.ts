@@ -1,5 +1,5 @@
-import { FlexFile } from "./files/flex";
-import { IFileSpec } from "./files/object";
+import { FlexFile } from './files/flex';
+import { IFileSpec } from './files/object';
 
-let flex = new FlexFile({ name: 'test'});
+const flex = new FlexFile({ name: 'PALETTES.FLX'});
 console.log(flex);
