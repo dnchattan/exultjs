@@ -14,7 +14,7 @@ enum FlexVersion {
 
 const EXULT_FLEX_MAGIC2 = 0x0000cc00;
 
-export interface IFlexHeader {
+interface IFlexHeader {
     title: string;  // 50 characters (optional, filled with 00s)
     magic1: uint32; // seems to be always $FFFF1A00
     count: uint32;  // number of object in table, including empty objects
@@ -35,8 +35,8 @@ export class Flex extends U7File {
 
     public count: number;
     public type: 'FLEX';
-    protected header: IFlexHeader;
-    protected objectList: IReference[];
+    private header: IFlexHeader;
+    private objectList: IReference[];
 
     constructor(spec: IFileSpec) {
         super(spec);

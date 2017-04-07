@@ -4,37 +4,35 @@ import { IFileSpec } from "./object";
 import { IDataSource } from "./databuf";
 import { file_read_exception, wrong_file_type_exception } from "../include/exceptions";
 
-export namespace IFFDetails {
-    export interface IHeader {
-        formMagic: string; // length:4
-        size: uint32;
-        dataType: string; // length:4
-    }
-    export interface IIFFReference extends IReference {
-        name: string;
-    }
-    export interface IU7Object {
-        name: string; // length:8
-        data: Buffer;
-    }
+interface IHeader {
+    formMagic: string; // length:4
+    size: uint32;
+    dataType: string; // length:4
+}
+interface IIFFReference extends IReference {
+    name: string;
+}
+interface IU7Object {
+    name: string; // length:8
+    data: Buffer;
 }
 
 export class IFF extends U7File {
-    private static readHeader(data: IDataSource): IFFDetails.IHeader {
+    private static readHeader(data: IDataSource): IHeader {
         return {
             formMagic: data.readString(4),
             size: data.read4(),
             dataType: data.readString(4),
         };
     }
-    private static readObjectHeader(data: IDataSource): IFFDetails.IIFFReference {
+    private static readObjectHeader(data: IDataSource): IIFFReference {
         return {
             name: data.readString(4),
             size: data.read4(),
             offset: data.pos
         };
     }
-    private static readObject(data: IDataSource, header: IFFDetails.IIFFReference): IFFDetails.IU7Object {
+    private static readObject(data: IDataSource, header: IIFFReference): IU7Object {
         return {
             name: data.readString(8),
             data: data.read(header.size),
@@ -43,15 +41,15 @@ export class IFF extends U7File {
 
     public count: number;
     public type: "IFF";
-    protected header: IFFDetails.IHeader;
-    protected objectList: IFFDetails.IIFFReference[];
+    private header: IHeader;
+    private objectList: IIFFReference[];
 
     constructor(spec: IFileSpec) {
         super(spec);
     }
 
     public read(index: number, size: number): Buffer {
-        let ref: IFFDetails.IIFFReference = this.objectList[index];
+        let ref: IIFFReference = this.objectList[index];
         if (!ref) {
             return new Buffer('');
         }
