@@ -70,7 +70,6 @@ export class Flex extends U7File {
     }
 }
 
-// tslint:disable-next-line:max-classes-per-file
 export class FlexFile extends Flex {
     constructor(identifier: IFileSpec) {
         super(identifier);
