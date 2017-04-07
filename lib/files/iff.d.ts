@@ -1,17 +1,15 @@
 /// <reference types="node" />
 import { U7File } from "./file";
-import { charArray, uint32, IReference } from "../include/types";
+import { uint32, IReference } from "../include/types";
 import { IFileSpec } from "./object";
 export declare namespace IFFDetails {
     interface IHeader {
-        formMagic: charArray;
+        formMagic: string;
         size: uint32;
-        dataType: charArray;
+        dataType: string;
     }
     interface IIFFReference extends IReference {
         name: string;
-        offset: uint32;
-        size: uint32;
     }
     interface IU7Object {
         name: string;

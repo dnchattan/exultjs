@@ -1,19 +1,17 @@
 import { U7File } from "./file";
-import { charArray, uint32, char, IReference } from "../include/types";
+import { uint32, char, IReference } from "../include/types";
 import { IFileSpec } from "./object";
 import { IDataSource } from "./databuf";
 import { file_read_exception, wrong_file_type_exception } from "../include/exceptions";
 
 export namespace IFFDetails {
     export interface IHeader {
-        formMagic: charArray; // length:4
+        formMagic: string; // length:4
         size: uint32;
-        dataType: charArray; // length:4
+        dataType: string; // length:4
     }
     export interface IIFFReference extends IReference {
         name: string;
-        offset: uint32;
-        size: uint32;
     }
     export interface IU7Object {
         name: string; // length:8
