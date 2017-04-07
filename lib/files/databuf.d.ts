@@ -11,7 +11,7 @@ export interface IDataSource {
     read2high(): number;
     read4(): number;
     read4high(): number;
-    read(size: number): ArrayBuffer;
+    read(size: number): Buffer;
     readString(size: number): string;
 }
 export declare class BufferDataSource implements IDataSource {
@@ -29,6 +29,6 @@ export declare class BufferDataSource implements IDataSource {
     read2high(): number;
     read4(): number;
     read4high(): number;
-    read(n: number): ArrayBuffer;
+    read(n: number): Buffer;
     readString(size: number): string;
 }

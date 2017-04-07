@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import { BufferDataSource, IDataSource } from './databuf';
 import { IFileSpec } from './object';
 
-export type ArchiveType = 'FLEX';
+export type ArchiveType = 'FLEX' | 'IFF';
 
 export abstract class U7File {
     protected data: IDataSource;

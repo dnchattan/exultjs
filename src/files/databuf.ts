@@ -14,7 +14,7 @@ export interface IDataSource {
     read2high(): number;
     read4(): number;
     read4high(): number;
-    read(size: number): ArrayBuffer;
+    read(size: number): Buffer;
     readString(size: number): string;
 }
 
@@ -64,8 +64,8 @@ export class BufferDataSource implements IDataSource {
         this.cursor += 4;
         return value;
     }
-    public read(n: number): ArrayBuffer {
-        const value = this.buffer.buffer.slice(this.cursor, this.cursor += n);
+    public read(n: number): Buffer {
+        const value = this.buffer.slice(this.cursor, this.cursor += n);
         return value;
     }
     public readString(size: number): string {

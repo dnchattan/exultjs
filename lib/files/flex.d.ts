@@ -1,16 +1,13 @@
 /// <reference types="node" />
 import { U7File } from './file';
 import { IFileSpec } from './object';
+import { IReference, uint32 } from "../include/types";
 export interface IFlexHeader {
     title: string;
-    magic1: number;
-    count: number;
-    magic2: number;
+    magic1: uint32;
+    count: uint32;
+    magic2: uint32;
     padding?: any;
-}
-export interface IReference {
-    offset: number;
-    size: number;
 }
 export declare class Flex extends U7File {
     private static readHeader(data);

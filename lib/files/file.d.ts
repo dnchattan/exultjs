@@ -1,7 +1,7 @@
 /// <reference types="node" />
-import { IFileSpec } from "./object";
-import { IDataSource } from "./databuf";
-export declare type ArchiveType = "FLEX";
+import { IDataSource } from './databuf';
+import { IFileSpec } from './object';
+export declare type ArchiveType = 'FLEX' | 'IFF';
 export declare abstract class U7File {
     protected identifier: IFileSpec;
     protected data: IDataSource;

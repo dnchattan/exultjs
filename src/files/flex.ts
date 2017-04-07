@@ -5,25 +5,21 @@ import { U7File } from './file';
 import { IFileSpec } from './object';
 import { applyMixins } from './utils';
 import { U7Exists, U7Open } from './utils';
+import { IReference, uint32 } from "../include/types";
 
 enum FlexVersion {
     orig = 0,       ///<    Original file version.
-    exult_v2 = 1,    ///<    Exult extension for IFIX objects.
+    exult_v2 = 1,   ///<    Exult extension for IFIX objects.
 }
 
 const EXULT_FLEX_MAGIC2 = 0x0000cc00;
 
 export interface IFlexHeader {
     title: string;  // 50 characters (optional, filled with 00s)
-    magic1: number; // seems to be always $FFFF1A00
-    count: number;  // number of object in table, including empty objects
-    magic2: number; // seems to be always $000000CC
+    magic1: uint32; // seems to be always $FFFF1A00
+    count: uint32;  // number of object in table, including empty objects
+    magic2: uint32; // seems to be always $000000CC
     padding?: any;  // often set to 0, but sometimes used, meaning?
-}
-
-export interface IReference {
-    offset: number;
-    size: number;
 }
 
 export class Flex extends U7File {
@@ -47,7 +43,12 @@ export class Flex extends U7File {
     }
 
     public read(index: number, size: number): Buffer {
-        throw new Error('Method not implemented.');
+        let ref: IReference = this.objectList[index];
+        if(!ref) {
+            return new Buffer('');
+        }
+        this.data.seek(ref.offset);
+        return this.data.read(ref.size);
     }
 
     protected index(): void {
