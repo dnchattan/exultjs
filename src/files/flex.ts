@@ -42,7 +42,7 @@ export class Flex extends U7File {
         super(spec);
     }
 
-    public read(index: number, size: number): Buffer {
+    public read(index: number): Buffer {
         const ref: IReference = this.objectList[index];
         if (!ref) {
             return new Buffer('');
@@ -72,11 +72,17 @@ export class Flex extends U7File {
 }
 
 export class FlexFile extends Flex {
-    constructor(identifier: IFileSpec) {
+    constructor(identifier: IFileSpec, buffer?: Buffer) {
         super(identifier);
-        if (U7Exists(identifier.name)) {
-            this.data = new BufferDataSource(U7Open(identifier.name));
-            this.index();
+        if (!buffer) {
+            if (U7Exists(identifier.name)) {
+                buffer = U7Open(identifier.name);
+            }
         }
+        if (!buffer) {
+            // TODO: ???
+        }
+        this.data = new BufferDataSource(buffer);
+        this.index();
     }
 }

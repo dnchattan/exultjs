@@ -5,8 +5,8 @@ export interface IFileSpec {
 }
 export declare class U7Object {
     protected identifier: IFileSpec;
-    constructor(identifier: IFileSpec);
-    protected index: number;
     readonly count: number;
+    protected index: number;
+    constructor(identifier: IFileSpec);
     read(): Promise<Buffer>;
 }

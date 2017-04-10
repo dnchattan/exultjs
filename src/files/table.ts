@@ -39,7 +39,7 @@ export class IFF extends U7File {
         super(spec);
     }
 
-    public read(index: number): Buffer {
+    public read(index: number, size: number): Buffer {
         const ref: IIFFReference = this.objectList[index];
         if (!ref) {
             return new Buffer('');
