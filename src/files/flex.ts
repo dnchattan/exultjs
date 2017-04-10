@@ -1,11 +1,11 @@
 import { Readable } from 'stream';
 import { file_read_exception, wrong_file_type_exception } from '../include/exceptions';
+import { IReference, uint32 } from '../include/types';
 import { BufferDataSource, IDataSource } from './databuf';
 import { U7File } from './file';
 import { IFileSpec } from './object';
 import { applyMixins } from './utils';
 import { U7Exists, U7Open } from './utils';
-import { IReference, uint32 } from "../include/types";
 
 enum FlexVersion {
     orig = 0,       ///<    Original file version.
@@ -43,8 +43,8 @@ export class Flex extends U7File {
     }
 
     public read(index: number, size: number): Buffer {
-        let ref: IReference = this.objectList[index];
-        if(!ref) {
+        const ref: IReference = this.objectList[index];
+        if (!ref) {
             return new Buffer('');
         }
         this.data.seek(ref.offset);

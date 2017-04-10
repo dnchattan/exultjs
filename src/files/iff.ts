@@ -1,17 +1,19 @@
-import { U7File } from "./file";
-import { uint32, char, IReference } from "../include/types";
-import { IFileSpec } from "./object";
-import { IDataSource } from "./databuf";
-import { file_read_exception, wrong_file_type_exception } from "../include/exceptions";
+import { file_read_exception, wrong_file_type_exception } from '../include/exceptions';
+import { char, IReference, uint32 } from '../include/types';
+import { IDataSource } from './databuf';
+import { U7File } from './file';
+import { IFileSpec } from './object';
 
 interface IHeader {
     formMagic: string; // length:4
     size: uint32;
     dataType: string; // length:4
 }
+
 interface IIFFReference extends IReference {
     name: string;
 }
+
 interface IU7Object {
     name: string; // length:8
     data: Buffer;
@@ -29,7 +31,7 @@ export class IFF extends U7File {
         return {
             name: data.readString(4),
             size: data.read4(),
-            offset: data.pos
+            offset: data.pos,
         };
     }
     private static readObject(data: IDataSource, header: IIFFReference): IU7Object {
@@ -40,7 +42,7 @@ export class IFF extends U7File {
     }
 
     public count: number;
-    public type: "IFF";
+    public type: 'IFF';
     private header: IHeader;
     private objectList: IIFFReference[];
 
@@ -49,14 +51,14 @@ export class IFF extends U7File {
     }
 
     public read(index: number, size: number): Buffer {
-        let ref: IIFFReference = this.objectList[index];
+        const ref: IIFFReference = this.objectList[index];
         if (!ref) {
             return new Buffer('');
         }
         this.data.seek(ref.offset);
-        return this.data.read(ref.size);        
+        return this.data.read(ref.size);
     }
-    
+
     /**
      *  Reads the header from an IFF and builds an object index.
      */
@@ -66,10 +68,10 @@ export class IFF extends U7File {
         }
 
         this.header = IFF.readHeader(this.data);
-        if (this.header.formMagic !== "FORM") {
+        if (this.header.formMagic !== 'FORM') {
             throw new wrong_file_type_exception(this.identifier.name, 'FLEX');
         }
-        
+
         /*
         -the objects entries
             entry   = type, size, object, [even]
@@ -84,11 +86,12 @@ export class IFF extends U7File {
         this.objectList = [];
         while (this.data.pos < this.header.size) {
             const ref = IFF.readObjectHeader(this.data);
-            if (ref.size === 0 || ref.offset == 0) {
+            if (ref.size === 0 || ref.offset === 0) {
                 break;
             }
             this.objectList.push(ref);
     		// Objects are word-aligned in IFF files.
+            // tslint:disable-next-line:no-bitwise
             this.data.seek(ref.offset + ref.size + (ref.size & 1));
         }
     }

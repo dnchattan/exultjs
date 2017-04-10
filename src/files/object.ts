@@ -4,13 +4,13 @@ export interface IFileSpec {
 }
 
 export class U7Object {
+    public readonly count: number;
+    protected index: number;
+
     constructor(protected identifier: IFileSpec) {
 
     }
-    protected index: number;
-
-    public readonly count: number;
     public read(): Promise<Buffer> {
-        throw new Error("not implemented");
+        throw new Error('not implemented');
     }
 }
